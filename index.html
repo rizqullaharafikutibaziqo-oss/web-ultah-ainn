@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ain's Little Universe ✦</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap');
+
+:root {
+  --bg:#100b20;
+  --card:#1b1430;
+  --pink:#f4a9d1;
+  --purple:#bba3ff;
+  --white:#fff4ff;
+  --muted:#c0b3d3;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.35;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px,#fff,transparent),
+    radial-gradient(1px 1px at 90px 80px,#fff,transparent),
+    radial-gradient(2px 2px at 160px 140px,#fff,transparent),
+    radial-gradient(1px 1px at 220px 40px,#fff,transparent);
+  background-size:250px 180px;
+  z-index:-1;
+}
+h1,h2,h3{font-family:'Playfair Display',serif}
+section{
+  width:min(900px,90%);
+  margin:auto;
+  padding:85px 0;
+  text-align:center;
+}
+.eyebrow{
+  color:var(--pink);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  font-size:11px;
+  margin-bottom:15px;
+}
+h2{
+  font-size:clamp(30px,6vw,46px);
+  margin-bottom:18px;
+}
+p{
+  color:var(--muted);
+  line-height:1.8;
+}
+.gradient{
+  background:linear-gradient(90deg,#fff,#f4a9d1,#bba3ff);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.btn{
+  display:inline-block;
+  border:1px solid #d6b8ff80;
+  background:linear-gradient(110deg,#d69bcf,#9f8de0);
+  color:#21132e;
+  padding:13px 25px;
+  border-radius:30px;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+  margin-top:22px;
+  transition:.3s;
+}
+.btn:hover{transform:translateY(-3px);filter:brightness(1.1)}
+#enter-toggle{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+#opening{
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:25px;
+  background:radial-gradient(circle at center,#382452,#100b24 75%);
+  transition:opacity .8s,visibility .8s;
+}
+#enter-toggle:checked ~ #opening{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.moon{
+  font-size:65px;
+  color:var(--pink);
+  margin-bottom:20px;
+  animation:float 3s ease-in-out infinite;
+}
+#opening h1{font-size:clamp(45px,10vw,75px);margin:12px 0}
+#opening p:not(.eyebrow){max-width:340px;margin:auto}
+.card{
+  background:linear-gradient(145deg,#241a3b,#191329);
+  border:1px solid #ffffff12;
+  padding:28px;
+  border-radius:22px;
+  margin:20px 0;
+  box-shadow:0 15px 45px #0002;
+}
+.countdown{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  max-width:600px;
+  margin:30px auto;
+}
+.time{
+  background:var(--card);
+  border:1px solid #ffffff15;
+  padding:20px 5px;
+  border-radius:16px;
+}
+.time strong{
+  display:block;
+  color:var(--pink);
+  font-size:clamp(25px,6vw,40px);
+}
+.time span{font-size:11px;color:var(--muted)}
+.music{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  text-align:left;
+}
+.vinyl{
+  width:75px;height:75px;
+  flex-shrink:0;
+  border-radius:50%;
+  background:repeating-radial-gradient(circle,#171222 0 4px,#51405d 5px 6px);
+  display:grid;
+  place-items:center;
+  animation:spin 5s linear infinite;
+  animation-play-state:paused;
+}
+.vinyl:after{
+  content:"";
+  width:15px;height:15px;
+  border-radius:50%;
+  background:var(--pink);
+}
+.vinyl.playing{animation-play-state:running}
+.music-info{flex:1;min-width:0}
+.music-info h3{font-size:20px;margin-bottom:5px}
+.music-info p{font-size:12px}
+.music button{
+  border:1px solid #ffffff25;
+  background:#ffffff10;
+  color:white;
+  padding:9px 12px;
+  border-radius:20px;
+  margin:5px 3px 0 0;
+  cursor:pointer;
+}
+.letter{
+  text-align:left;
+  position:relative;
+  cursor:pointer;
+}
+.letter-content{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .8s ease;
+}
+.letter.open .letter-content{max-height:900px}
+.letter-content p{margin-top:20px}
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+.photo{
+  min-height:180px;
+  border-radius:17px;
+  background:linear-gradient(145deg,#33234e,#21152f);
+  border:1px solid #ffffff15;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  color:#cdb9e5;
+  font-size:13px;
+}
+.photo img{width:100%;height:100%;object-fit:cover}
+.timeline{
+  text-align:left;
+  border-left:1px solid #d7a6dc;
+  padding-left:25px;
+  margin:35px auto;
+  max-width:500px;
+}
+.event{position:relative;margin-bottom:30px}
+.event:before{
+  content:"";
+  position:absolute;
+  left:-31px;top:7px;
+  width:11px;height:11px;
+  border-radius:50%;
+  background:var(--pink);
+  box-shadow:0 0 12px var(--pink);
+}
+.event h3{font-size:20px;margin-bottom:5px}
+.wishes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.wish{
+  padding:18px;
+  background:var(--card);
+  border-radius:15px;
+  border:1px solid #ffffff12;
+  font-size:14px;
+  color:var(--muted);
+}
+.secret{
+  display:none;
+  margin-top:20px;
+  padding:22px;
+  border:1px dashed #d9a9dc;
+  border-radius:15px;
+}
+.secret.show{display:block}
+footer{padding:50px 15px;text-align:center;color:#9889aa;font-size:12px}
+#progress{
+  position:fixed;
+  top:0;left:0;
+  height:3px;
+  width:0;
+  background:linear-gradient(90deg,var(--pink),var(--purple));
+  z-index:3000;
+}
+#top{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  border:0;
+  border-radius:50%;
+  width:43px;height:43px;
+  background:#bba3ff;
+  color:#20152d;
+  font-size:20px;
+  cursor:pointer;
+  display:none;
+}
+.reveal{opacity:0;transform:translateY(25px);transition:.7s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{50%{transform:translateY(-12px)}}
+@media(max-width:520px){
+  section{padding:65px 0}
+  .countdown{gap:7px}
+  .time{padding:15px 3px}
+  .gallery{grid-template-columns:1fr 1fr}
+  .photo{min-height:130px}
+  .card{padding:20px}
+  .music{gap:12px}
+  .vinyl{width:58px;height:58px}
+  .wishes{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<input type="checkbox" id="enter-toggle">
+<div id="opening">
+  <div>
+    <div class="moon">☾</div>
+    <p class="eyebrow">A little universe made for you</p>
+    <h1 class="gradient">Hello, Ain.</h1>
+    <p>Someone made a little corner of the universe just to celebrate you.</p>
+    <label for="enter-toggle" class="btn">Enter your universe ✦</label>
+  </div>
+</div>
+
+<main>
+<section>
+  <p class="eyebrow">December 21, 2026</p>
+  <h1 class="gradient" style="font-size:clamp(42px,9vw,72px)">Ain's Little Universe</h1>
+  <p>A small universe, made for one special person.</p>
+  <div class="countdown" id="countdown">
+    <div class="time"><strong id="days">00</strong><span>DAYS</span></div>
+    <div class="time"><strong id="hours">00</strong><span>HOURS</span></div>
+    <div class="time"><strong id="minutes">00</strong><span>MINUTES</span></div>
+    <div class="time"><strong id="seconds">00</strong><span>SECONDS</span></div>
+  </div>
+  <p id="count-text">Counting down to your special day ✦</p>
+</section>
+
+<section class="reveal">
+  <p class="eyebrow">A little soundtrack</p>
+  <h2>Press play, <span class="gradient">and stay awhile.</span></h2>
+  <div class="card music">
+    <div class="vinyl" id="vinyl"></div>
+    <div class="music-info">
+      <h3>Protector</h3>
+      <p>Pluto · A little song for you</p>
+      <button onclick="playMusic()">Play</button>
+      <button onclick="pauseMusic()">Pause</button>
+      <button onclick="restartMusic()">Restart</button>
+    </div>
+  </div>
+  <p style="font-size:12px">Letakkan file musik bernama <b>protector.mp3</b> di folder yang sama.</p>
+  <audio id="audio" src="protector.mp3" loop></audio>
+</section>
+
+<section class="reveal">
+  <p class="eyebrow">A few words</p>
+  <h2>For <span class="gradient">you, Ain.</span></h2>
+  <div class="card letter" id="letter" onclick="toggleLetter()">
+    <h3>✉ A letter waiting to be opened</h3>
+    <p style="font-size:12px;margin-top:8px">Tap to open this little letter</p>
+    <div class="letter-content">
+      <p>Dear Ain,</p>
+      <p>Selamat ulang tahun. Semoga hari-harimu selalu dipenuhi hal-hal baik, orang-orang tulus, dan alasan untuk tersenyum.</p>
+      <p>Semoga semua hal yang sedang kamu perjuangkan perlahan menemukan jalannya. Jangan pernah merasa bahwa kamu harus menjadi sempurna untuk menjadi seseorang yang berharga.</p>
+      <p>Teruslah tumbuh, teruslah bermimpi, dan tetap jadi dirimu sendiri.</p>
+      <p>With warm wishes,<br>Someone who wishes you well. ✦</p>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <p class="eyebrow">Little memories</p>
+  <h2>A gallery of <span class="gradient">moments.</span></h2>
+  <p>Ganti foto placeholder ini dengan foto pilihanmu.</p>
+  <div class="gallery" style="margin-top:25px">
+    <div class="photo"><img src="photo1.jpg" alt="Memory 1" onerror="this.style.display='none';this.parentElement.innerText='✦ Memory 1'"></div>
+    <div class="photo"><img src="photo2.jpg" alt="Memory 2" onerror="this.style.display='none';this.parentElement.innerText='✦ Memory 2'"></div>
+    <div class="photo"><img src="photo3.jpg" alt="Memory 3" onerror="this.style.display='none';this.parentElement.innerText='✦ Memory 3'"></div>
+    <div class="photo"><img src="photo4.jpg" alt="Memory 4" onerror="this.style.display='none';this.parentElement.innerText='✦ Memory 4'"></div>
+    <div class="photo"><img src="photo5.jpg" alt="Memory 5" onerror="this.style.display='none';this.parentElement.innerText='✦ Memory 5'"></div>
+    <div class="photo"><img src="photo6.jpg" alt="Memory 6" onerror="this.style.display='none';this.parentElement.innerText='✦ Memory 6'"></div>
+  </div>
+</section>
+
+<section class="reveal">
+  <p class="eyebrow">A little timeline</p>
+  <h2>Every moment has <span class="gradient">its own magic.</span></h2>
+  <div class="timeline">
+    <div class="event">
+      <h3>The beginning ✦</h3>
+      <p>Some people enter our lives and leave a little light behind.</p>
+    </div>
+    <div class="event">
+      <h3>Little things</h3>
+      <p>Sometimes the smallest moments become the ones we remember.</p>
+    </div>
+    <div class="event">
+      <h3>Today, and beyond</h3>
+      <p>Here's to more beautiful days waiting ahead.</p>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <p class="eyebrow">Ten little wishes</p>
+  <h2>Things I wish <span class="gradient">for you.</span></h2>
+  <div class="wishes">
+    <div class="wish">01 · May you always find reasons to smile.</div>
+    <div class="wish">02 · May your dreams find their way to you.</div>
+    <div class="wish">03 · May your heart always feel at peace.</div>
+    <div class="wish">04 · May kind people surround you.</div>
+    <div class="wish">05 · May you never stop growing.</div>
+    <div class="wish">06 · May your efforts bring good results.</div>
+    <div class="wish">07 · May you stay healthy and happy.</div>
+    <div class="wish">08 · May you discover new beautiful things.</div>
+    <div class="wish">09 · May you be proud of yourself.</div>
+    <div class="wish">10 · May life be gentle with you.</div>
+  </div>
+</section>
+
+<section class="reveal">
+  <p class="eyebrow">One last thing</p>
+  <h2>A little <span class="gradient">secret.</span></h2>
+  <p>There's one more message waiting for you.</p>
+  <button class="btn" onclick="showSecret()">Open secret message ✦</button>
+  <div class="secret" id="secret">
+    <h3 style="color:var(--pink);margin-bottom:12px">You deserve good things.</h3>
+    <p>Semoga semesta selalu punya cara untuk mempertemukanmu dengan kebahagiaan. Happy birthday, Ain. ✦</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  Made with a little bit of stardust ✦<br>
+  For Ain · December 21, 2026
+</footer>
+
+<button id="top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const target = new Date("2026-12-21T00:00:00+07:00").getTime();
+
+function updateCountdown(){
+  const now = Date.now();
+  const distance = target - now;
+
+  if(distance <= 0){
+    document.getElementById("count-text").textContent = "Today is your special day. Happy birthday, Ain! ✦";
+    ["days","hours","minutes","seconds"].forEach(id=>{
+      document.getElementById(id).textContent = "00";
+    });
+    return;
+  }
+
+  document.getElementById("days").textContent = Math.floor(distance/86400000);
+  document.getElementById("hours").textContent = Math.floor((distance%86400000)/3600000);
+  document.getElementById("minutes").textContent = Math.floor((distance%3600000)/60000);
+  document.getElementById("seconds").textContent = Math.floor((distance%60000)/1000);
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+const audio = document.getElementById("audio");
+const vinyl = document.getElementById("vinyl");
+
+function playMusic(){
+  audio.play().then(()=>{
+    vinyl.classList.add("playing");
+  }).catch(()=>{
+    alert("Pastikan file protector.mp3 sudah di-upload bersama index.html.");
+  });
+}
+function pauseMusic(){
+  audio.pause();
+  vinyl.classList.remove("playing");
+}
+function restartMusic(){
+  audio.currentTime=0;
+  playMusic();
+}
+audio.addEventListener("ended",()=>vinyl.classList.remove("playing"));
+
+function toggleLetter(){
+  document.getElementById("letter").classList.toggle("open");
+}
+function showSecret(){
+  document.getElementById("secret").classList.toggle("show");
+}
+
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("visible");
+    }
+  });
+},{threshold:0.12});
+
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+window.addEventListener("scroll",()=>{
+  const max = document.documentElement.scrollHeight-window.innerHeight;
+  const progress = max>0 ? (window.scrollY/max)*100 : 0;
+  document.getElementById("progress").style.width=progress+"%";
+  document.getElementById("top").style.display=window.scrollY>500?"block":"none";
+});
+</script>
+</body>
+  </html>
+  
